@@ -191,12 +191,14 @@
         auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log('User is logged in:', user.uid);
-                window.location.href = 'weight-tracking.html'; // توجيه للصفحة الرئيسية
+                window.location.href = './weight-tracking.html'; // توجيه نسبي للصفحة الرئيسية
             } else {
                 console.log('No user is logged in');
                 // ربط زر التسجيل بعد التهيئة
                 document.getElementById('signupButton').addEventListener('click', signup);
             }
+        }, (error) => {
+            console.error('Auth state change error:', error.message);
         });
 
         // دالة التسجيل
@@ -216,7 +218,7 @@
                         }).then(() => {
                             console.log('User data saved');
                             alert('تم التسجيل بنجاح!');
-                            window.location.href = 'weight-tracking.html'; // التحويل للصفحة الرئيسية
+                            window.location.href = './weight-tracking.html'; // التحويل للصفحة الرئيسية
                         }).catch((error) => {
                             console.error('Firestore error:', error.message);
                             alert('خطأ في حفظ البيانات: ' + error.message);
