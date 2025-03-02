@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متابعة الوزن اليومي</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            direction: rtl;
+            text-align: right;
+            padding: 30px;
+            background-color: #ECEFF1;
+            color: #37474F;
+            margin: 0;
+            transition: all 0.3s ease;
+        }
+        body.dark-mode {
+            background-color: #1A1A1A;
+            color: #FFFFFF;
+        }
+        h1 {
+            color: #1E88E5;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        body.dark-mode h1 {
+            color: #FFFFFF;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        body.dark-mode .container {
+            background: #2D2D2D;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .form-group {
+            margin-bottom: 20px;
+            background: #FFFFFF;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #90CAF9;
+        }
+        body.dark-mode .form-group {
+            background: #2D2D2D;
+            border-color: #42A5F5;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #1E88E5;
+        }
+        body.dark-mode label {
+            color: #FFFFFF;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #90CAF9;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            background-color: #FFFFFF;
+            color: #37474F;
+        }
+        body.dark-mode input, body.dark-mode select {
+            background-color: #3A3A3A;
+            color: #FFFFFF;
+            border-color: #42A5F5;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #42A5F5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1E88E5;
+        }
+        h2 {
+            color: #1E88E5;
+            margin-top: 30px;
+            font-size: 1.8em;
+        }
+        body.dark-mode h2 {
+            color: #FFFFFF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        body.dark-mode table {
+            background-color: #2D2D2D;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            vertical-align: top;
+            color: #37474F;
+        }
+        body.dark-mode th, body.dark-mode td {
+            color: #FFFFFF;
+        }
+        th {
+            background-color: #607D8B;
+            color: white;
+            font-weight: 700;
+        }
+        body.dark-mode th {
+            background-color: #4A5568;
+        }
+        td {
+            border-bottom: 1px solid #CFD8DC;
+        }
+        body.dark-mode td {
+            border-color: #4A4A4A;
+        }
+        tr:nth-child(even) {
+            background-color: #F5F7FA;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #3A3A3A;
+        }
+        .actions button {
+            padding: 6px 12px;
+            margin: 0 5px;
+            font-size: 0.9em;
+        }
+        .actions .edit-btn {
+            background-color: #66BB6A;
+        }
+        .actions .edit-btn:hover {
+            background-color: #4CAF50;
+        }
+        .actions .delete-btn {
+            background-color: #EF5350;
+        }
+        .actions .delete-btn:hover {
+            background-color: #E53935;
+        }
+        .edit-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+        }
+        body.dark-mode .edit-form {
+            background: #2D2D2D;
+        }
+        .edit-form.active {
+            display: block;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .overlay.active {
+            display: block;
+        }
+        .timer-container {
+            margin-top: 20px;
+            text-align: center;
+            padding: 15px;
+            background: #F9F9F9;
+            border-radius: 10px;
+            border: 1px solid #90CAF9;
+        }
+        body.dark-mode .timer-container {
+            background: #2D2D2D;
+            border-color: #42A5F5;
+        }
+        .timer {
+            font-size: 2em;
+            color: #1E88E5;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        body.dark-mode .timer {
+            color: #FFFFFF;
+        }
+        .timer-label {
+            font-size: 1.2em;
+            color: #607D8B;
+        }
+        body.dark-mode .timer-label {
+            color: #FFFFFF;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 40px;
+            background-color: #F4A261;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        body.dark-mode .theme-toggle {
+            background-color: #1A1A1A;
+        }
+        .theme-toggle__circle {
+            width: 32px;
+            height: 32px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle__circle img {
+            width: 24px;
+            height: 24px;
+        }
+        body.dark-mode .theme-toggle__circle {
+            transform: translateX(-40px);
+        }
+        .theme-toggle__circle img {
+            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>');
+        }
+        body.dark-mode .theme-toggle__circle img {
+            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-0.46-0.04-0.92-0.1-1.36-0.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81 0.89-3.42 2.26-4.4-0.44-0.06-0.9-0.1-1.36-0.1zM23.64 7c-1.31-1.31-2.98-2.35-4.8-3.12-1.32 2.38-2.76 4.54-4.31 6.46-2.34-1.07-4.94-1.65-7.59-1.65-5.74 0-10.38 4.64-10.38 10.38 0 0.98 0.18 1.92 0.5 2.78 1.56-3.94 4.81-6.74 8.63-6.74 2.13 0 4.06 0.78 5.56 2.05 1.7-1.53 3.8-2.54 6.12-2.96-0.27-0.93-0.42-1.91-0.42-2.91 0-3.31 2.69-6 6-6 1.52 0 2.92 0.51 4.06 1.34z"/></svg>');
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <label class="theme-toggle" onclick="toggleDarkMode()">
+        <span class="theme-toggle__circle">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='orange'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z'/></svg>" alt="Sun">
+        </span>
+    </label>
+    <div class="container">
+        <h1>متابعة الوزن اليومي</h1>
+        <div class="form-group">
+            <label>التاريخ: <span id="todayDate"></span></label>
+        </div>
+        <div class="form-group">
+            <label>الوزن: <input type="text" id="weight"> كجم</label>
+        </div>
+        <div class="form-group">
+            <label>الوقت: 
+                <select id="timeOfDay">
+                    <option value="عند الاستيقاظ">عند الاستيقاظ</option>
+                    <option value="قبل الفطار">قبل الفطار</option>
+                    <option value="بعد الفطار">بعد الفطار</option>
+                    <option value="قبل النوم">قبل النوم</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>غسيل الأسنان: 
+                <select id="teeth">
+                    <option value="✅">✅</option>
+                    <option value="❌">❌</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>قراءة القرآن: 
+                <select id="quran">
+                    <option value="✅">✅</option>
+                    <option value="❌">❌</option>
+                </select>
+            </label>
+        </div>
+        <button onclick="addEntry()">إضافة</button>
+
+        <h2>السجل</h2>
+        <table id="weightTable">
+            <thead>
+                <tr>
+                    <th>التاريخ</th>
+                    <th>عند الاستيقاظ</th>
+                    <th>قبل الفطار</th>
+                    <th>بعد الفطار</th>
+                    <th>قبل النوم</th>
+                    <th>غسيل الأسنان</th>
+                    <th>قراءة القرآن</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+
+        <div class="timer-container">
+            <div class="timer-label">الوقت المتبقي للتنبيه القادم:</div>
+            <div class="timer" id="timer">00:00:00</div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="edit-form" id="editForm">
+        <h3>تعديل الإدخالات</h3>
+        <div class="form-group">
+            <label>عند الاستيقاظ: <input type="text" id="editUponWaking"></label>
+        </div>
+        <div class="form-group">
+            <label>قبل الفطار: <input type="text" id="editBeforeBreakfast"></label>
+        </div>
+        <div class="form-group">
+            <label>بعد الفطار: <input type="text" id="editAfterBreakfast"></label>
+        </div>
+        <div class="form-group">
+            <label>قبل النوم: <input type="text" id="editBeforeSleep"></label>
+        </div>
+        <div class="form-group">
+            <label>غسيل الأسنان: 
+                <select id="editTeeth">
+                    <option value="✅">✅</option>
+                    <option value="❌">❌</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>قراءة القرآن: 
+                <select id="editQuran">
+                    <option value="✅">✅</option>
+                    <option value="❌">❌</option>
+                </select>
+            </label>
+        </div>
+        <button onclick="saveEdit()">حفظ</button>
+        <button onclick="cancelEdit()">إلغاء</button>
+    </div>
+
+    <script>
+        let entries = JSON.parse(localStorage.getItem('weightEntries')) || [];
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('todayDate').textContent = today;
+
+        // مصفوفة الأوقات للتنبيهات
+        let notificationTimes = [];
+
+        // دالة لحساب أوقات التنبيهات بناءً على أوقات الصلاة
+        function calculateNotificationTimes(fajrTime, maghribTime) {
+            const [fajrHours, fajrMinutes] = fajrTime.split(':').map(Number);
+            const [maghribHours, maghribMinutes] = maghribTime.split(':').map(Number);
+
+            // ربع ساعة قبل أذان الفجر
+            const beforeFajr = new Date();
+            beforeFajr.setHours(fajrHours, fajrMinutes - 15, 0, 0);
+            const beforeFajrTime = beforeFajr.toTimeString().slice(0, 5);
+
+            // نص ساعة قبل أذان المغرب
+            const beforeMaghrib = new Date();
+            beforeMaghrib.setHours(maghribHours, maghribMinutes - 30, 0, 0);
+            const beforeMaghribTime = beforeMaghrib.toTimeString().slice(0, 5);
+
+            // نص ساعة بعد أذان المغرب
+            const afterMaghrib = new Date();
+            afterMaghrib.setHours(maghribHours, maghribMinutes + 30, 0, 0);
+            const afterMaghribTime = afterMaghrib.toTimeString().slice(0, 5);
+
+            notificationTimes = [beforeFajrTime, beforeMaghribTime, afterMaghribTime];
+            console.log('Calculated notification times:', notificationTimes);
+            updateTimer();
+        }
+
+        // جلب أوقات الصلاة تلقائيًا باستخدام GeoLocation و API Aladhan
+        function fetchPrayerTimes() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const date = new Date().toISOString().split('T')[0];
+                        const apiUrl = `http://api.aladhan.com/v1/timings/${date}?latitude=${latitude}&longitude=${longitude}&method=2`;
+
+                        fetch(apiUrl)
+                            .then(response => response.json())
+                            .then(data => {
+                                const timings = data.data.timings;
+                                const fajrTime = timings.Fajr;
+                                const maghribTime = timings.Maghrib;
+                                calculateNotificationTimes(fajrTime, maghribTime);
+                            })
+                            .catch(error => {
+                                console.error('Error fetching prayer times:', error);
+                                calculateNotificationTimes('05:40', '17:24');
+                            });
+                    },
+                    error => {
+                        console.error('Geolocation error:', error);
+                        calculateNotificationTimes('05:40', '17:24');
+                    }
+                );
+            } else {
+                calculateNotificationTimes('05:40', '17:24');
+            }
+        }
+
+        // دالة التنبيهات مع التحقق من الإذن مرة واحدة
+        function checkNotifications() {
+            if (!("Notification" in window)) {
+                console.log("المتصفح لا يدعم التنبيهات.");
+                return;
+            }
+
+            if (Notification.permission === "default") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        console.log("الإذن تم منحة.");
+                    }
+                });
+            }
+
+            if (Notification.permission === "granted") {
+                const now = new Date();
+                const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+                notificationTimes.forEach(time => {
+                    if (currentTime === time && localStorage.getItem(`notified_${time}_${today}`) !== 'true') {
+                        new Notification('تذكير تسجيل الوزن', {
+                            body: 'يرجى تسجيل وزنك اليومي الآن!',
+                            icon: 'https://via.placeholder.com/64'
+                        });
+                        localStorage.setItem(`notified_${time}_${today}`, 'true');
+                    }
+                });
+            }
+        }
+
+        // دالة الطايمر
+        function updateTimer() {
+            const now = new Date();
+            const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            let nextNotificationTime = null;
+            let minDifference = Infinity;
+
+            notificationTimes.forEach(time => {
+                const [hours, minutes] = time.split(':').map(Number);
+                const notificationDate = new Date();
+                notificationDate.setHours(hours, minutes, 0, 0);
+
+                // إذا كان التنبيه لليوم التالي إذا فات الوقت
+                if (notificationDate < now) {
+                    notificationDate.setDate(notificationDate.getDate() + 1);
+                }
+
+                const difference = notificationDate - now;
+                if (difference >= 0 && difference < minDifference) {
+                    minDifference = difference;
+                    nextNotificationTime = notificationDate;
+                }
+            });
+
+            if (nextNotificationTime) {
+                const timeDiff = Math.max(0, Math.floor((nextNotificationTime - now) / 1000));
+                const hours = Math.floor(timeDiff / 3600);
+                const minutes = Math.floor((timeDiff % 3600) / 60);
+                const seconds = timeDiff % 60;
+                document.getElementById('timer').textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                document.getElementById('timer').textContent = '00:00:00';
+            }
+        }
+
+        // تحديث الطايمر كل ثانية
+        setInterval(updateTimer, 1000);
+        setInterval(checkNotifications, 60000);
+        checkNotifications();
+
+        // جلب أوقات الصلاة عند التحميل
+        fetchPrayerTimes();
+
+        // دالة تبديل الدارك مود
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const toggle = document.querySelector('.theme-toggle');
+            toggle.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // تفعيل الدارك مود إذا كان مخزن في localStorage
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.theme-toggle').classList.add('dark');
+        }
+
+        function groupEntriesByDate() {
+            const grouped = {};
+            entries.forEach((entry, index) => {
+                const key = entry.date;
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        date: entry.date,
+                        weights: {
+                            'عند الاستيقاظ': '',
+                            'قبل الفطار': '',
+                            'بعد الفطار': '',
+                            'قبل النوم': ''
+                        },
+                        teeth: '',
+                        quran: '',
+                        indices: []
+                    };
+                }
+                grouped[key].weights[entry.timeOfDay] = entry.weight || '';
+                grouped[key].teeth = entry.teeth;
+                grouped[key].quran = entry.quran;
+                grouped[key].indices.push(index);
+            });
+            return grouped;
+        }
+
+        function displayEntries() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            const groupedEntries = groupEntriesByDate();
+
+            Object.values(groupedEntries).forEach(group => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${group.date}</td>
+                    <td>${group.weights['عند الاستيقاظ'] ? `${group.weights['عند الاستيقاظ']} كجم` : ''}</td>
+                    <td>${group.weights['قبل الفطار'] ? `${group.weights['قبل الفطار']} كجم` : ''}</td>
+                    <td>${group.weights['بعد الفطار'] ? `${group.weights['بعد الفطار']} كجم` : ''}</td>
+                    <td>${group.weights['قبل النوم'] ? `${group.weights['قبل النوم']} كجم` : ''}</td>
+                    <td>${group.teeth}</td>
+                    <td>${group.quran}</td>
+                    <td class="actions">
+                        <button class="edit-btn" onclick="showEditForm('${group.date}')">تعديل</button>
+                        <button class="delete-btn" onclick="deleteAllEntries('${group.date}')">مسح</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function addEntry() {
+            const weight = document.getElementById('weight').value;
+            if (weight && !isNaN(weight) && weight > 0) {
+                const entry = {
+                    date: today,
+                    timeOfDay: document.getElementById('timeOfDay').value,
+                    weight: weight,
+                    teeth: document.getElementById('teeth').value,
+                    quran: document.getElementById('quran').value
+                };
+                entries.push(entry);
+                localStorage.setItem('weightEntries', JSON.stringify(entries));
+                displayEntries();
+                clearInputs();
+            } else {
+                alert('يرجى إدخال وزن صحيح!');
+            }
+        }
+
+        function clearInputs() {
+            document.getElementById('weight').value = '';
+            document.getElementById('timeOfDay').value = 'عند الاستيقاظ';
+            document.getElementById('teeth').value = '✅';
+            document.getElementById('quran').value = '✅';
+        }
+
+        function deleteAllEntries(date) {
+            if (confirm('هل أنت متأكد من حذف كل إدخالات هذا اليوم؟')) {
+                entries = entries.filter(entry => entry.date !== date);
+                localStorage.setItem('weightEntries', JSON.stringify(entries));
+                displayEntries();
+            }
+        }
+
+        function showEditForm(date) {
+            const group = groupEntriesByDate()[date];
+            document.getElementById('editUponWaking').value = group.weights['عند الاستيقاظ'] || '';
+            document.getElementById('editBeforeBreakfast').value = group.weights['قبل الفطار'] || '';
+            document.getElementById('editAfterBreakfast').value = group.weights['بعد الفطار'] || '';
+            document.getElementById('editBeforeSleep').value = group.weights['قبل النوم'] || '';
+            document.getElementById('editTeeth').value = group.teeth;
+            document.getElementById('editQuran').value = group.quran;
+            document.getElementById('editForm').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            window.currentEditDate = date;
+        }
+
+        function saveEdit() {
+            const newEntries = [];
+            const uponWaking = document.getElementById('editUponWaking').value;
+            const beforeBreakfast = document.getElementById('editBeforeBreakfast').value;
+            const afterBreakfast = document.getElementById('editAfterBreakfast').value;
+            const beforeSleep = document.getElementById('editBeforeSleep').value;
+            const teeth = document.getElementById('editTeeth').value;
+            const quran = document.getElementById('editQuran').value;
+            const date = window.currentEditDate;
+
+            entries.forEach(entry => {
+                if (entry.date === date) {
+                    if (uponWaking && !isNaN(uponWaking) && uponWaking > 0) {
+                        newEntries.push({ ...entry, timeOfDay: 'عند الاستيقاظ', weight: uponWaking, teeth, quran });
+                    }
+                    if (beforeBreakfast && !isNaN(beforeBreakfast) && beforeBreakfast > 0) {
+                        newEntries.push({ ...entry, timeOfDay: 'قبل الفطار', weight: beforeBreakfast, teeth, quran });
+                    }
+                    if (afterBreakfast && !isNaN(afterBreakfast) && afterBreakfast > 0) {
+                        newEntries.push({ ...entry, timeOfDay: 'بعد الفطار', weight: afterBreakfast, teeth, quran });
+                    }
+                    if (beforeSleep && !isNaN(beforeSleep) && beforeSleep > 0) {
+                        newEntries.push({ ...entry, timeOfDay: 'قبل النوم', weight: beforeSleep, teeth, quran });
+                    }
+                } else {
+                    newEntries.push(entry);
+                }
+            });
+
+            entries = newEntries;
+            localStorage.setItem('weightEntries', JSON.stringify(entries));
+            cancelEdit();
+            displayEntries();
+        }
+
+        function cancelEdit() {
+            document.getElementById('editForm').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // تنفيذ جلب أوقات الصلاة عند تحميل الصفحة
+        fetchPrayerTimes();
+        displayEntries();
+    </script>
+</body>
+</html>

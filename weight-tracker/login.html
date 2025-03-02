@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            direction: rtl;
+            text-align: right;
+            padding: 30px;
+            background-color: #ECEFF1;
+            color: #37474F;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: all 0.3s ease;
+        }
+        body.dark-mode {
+            background-color: #1A1A1A;
+            color: #FFFFFF;
+        }
+        .login-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        body.dark-mode .login-container {
+            background: #2D2D2D;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #1E88E5;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        body.dark-mode h1 {
+            color: #FFFFFF;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #1E88E5;
+        }
+        body.dark-mode label {
+            color: #FFFFFF;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #90CAF9;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            background-color: #FFFFFF;
+            color: #37474F;
+        }
+        body.dark-mode input {
+            background-color: #3A3A3A;
+            color: #FFFFFF;
+            border-color: #42A5F5;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #42A5F5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1E88E5;
+        }
+        .toggle-mode {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 40px;
+            background-color: #F4A261;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        body.dark-mode .toggle-mode {
+            background-color: #1A1A1A;
+        }
+        .toggle-mode__circle {
+            width: 32px;
+            height: 32px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toggle-mode__circle img {
+            width: 24px;
+            height: 24px;
+        }
+        body.dark-mode .toggle-mode__circle {
+            transform: translateX(-40px);
+        }
+        .toggle-mode__circle img {
+            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>');
+        }
+        body.dark-mode .toggle-mode__circle img {
+            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-0.46-0.04-0.92-0.1-1.36-0.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81 0.89-3.42 2.26-4.4-0.44-0.06-0.9-0.1-1.36-0.1zM23.64 7c-1.31-1.31-2.98-2.35-4.8-3.12-1.32 2.38-2.76 4.54-4.31 6.46-2.34-1.07-4.94-1.65-7.59-1.65-5.74 0-10.38 4.64-10.38 10.38 0 0.98 0.18 1.92 0.5 2.78 1.56-3.94 4.81-6.74 8.63-6.74 2.13 0 4.06 0.78 5.56 2.05 1.7-1.53 3.8-2.54 6.12-2.96-0.27-0.93-0.42-1.91-0.42-2.91 0-3.31 2.69-6 6-6 1.52 0 2.92 0.51 4.06 1.34z"/></svg>');
+        }
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #1E88E5;
+        }
+        body.dark-mode .signup-link {
+            color: #FFFFFF;
+        }
+        .signup-link a {
+            color: #42A5F5;
+            text-decoration: none;
+        }
+        body.dark-mode .signup-link a {
+            color: #42A5F5;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Firebase SDK Legacy -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <label class="toggle-mode" onclick="toggleDarkMode()">
+        <span class="toggle-mode__circle">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='orange'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z'/></svg>" alt="Sun">
+        </span>
+    </label>
+    <div class="login-container">
+        <h1>تسجيل الدخول</h1>
+        <div class="form-group">
+            <label>الإيميل:</label>
+            <input type="email" id="email" placeholder="أدخل إيميلك">
+        </div>
+        <div class="form-group">
+            <label>كلمة المرور:</label>
+            <input type="password" id="password" placeholder="أدخل كلمة المرور">
+        </div>
+        <button id="loginButton">تسجيل الدخول</button>
+        <div class="signup-link">
+            ليس لديك حساب؟ <a href="signup.html">سجل الآن</a>
+        </div>
+    </div>
+
+    <script>
+        // تهيئة Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
+            authDomain: "weight-1246d.firebaseapp.com",
+            projectId: "weight-1246d",
+            storageBucket: "weight-1246d.firebasestorage.app",
+            messagingSenderId: "86745037810",
+            appId: "1:86745037810:web:439d33bce75e5693b4896b"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // التحقق من حالة المستخدم عند التحميل
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is logged in:', user.uid);
+                window.location.href = './weight-tracking.html'; // توجيه نسبي للصفحة الرئيسية
+            } else {
+                console.log('No user is logged in');
+                // ربط زر التسجيل الدخول بعد التهيئة
+                document.getElementById('loginButton').addEventListener('click', login);
+            }
+        }, (error) => {
+            console.error('Auth state change error:', error.message);
+        });
+
+        // دالة تسجيل الدخول
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if (validateInput(email, password)) {
+                console.log('Trying to login with:', email, password);
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        console.log('Login success:', user.uid);
+                        alert('تم تسجيل الدخول بنجاح!');
+                        window.location.href = './weight-tracking.html'; // التحويل للصفحة الرئيسية
+                    })
+                    .catch((error) => {
+                        console.error('Login error:', error.message);
+                        alert('خطأ في الدخول: ' + error.message);
+                    });
+            } else {
+                alert('الإيميل غير صالح أو كلمة المرور أقل من 6 أحرف!');
+            }
+        }
+
+        // دالة تبديل الدارك mود
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const toggle = document.querySelector('.toggle-mode');
+            toggle.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // تفعيل الدارك mود إذا كان مخزن في localStorage
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.toggle-mode').classList.add('dark');
+        }
+
+        // التحقق من المدخلات
+        function validateInput(email, password) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email) && password.length >= 6;
+        }
+    </script>
+</body>
+</html>
