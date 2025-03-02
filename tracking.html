@@ -74,10 +74,11 @@
         </span>
     </label>
     <h1>صفحة المتابعة (قيد التطوير)</h1>
+
     <script>
         // تهيئة Firebase
         const firebaseConfig = {
-  apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
+ apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
   authDomain: "weight-1246d.firebaseapp.com",
   projectId: "weight-1246d",
   storageBucket: "weight-1246d.firebasestorage.app",
@@ -105,10 +106,9 @@
         // التحقق من تسجيل الدخول
         auth.onAuthStateChanged((user) => {
             if (user) {
-                // المستخدم مسجل الدخول، يمكن تطوير الصفحة هنا
                 console.log("المستخدم مسجل الدخول:", user.uid);
             } else {
-                window.location.href = 'index.html'; // لو مش مسجل الدخول، رجوع للرئيسية
+                window.location.href = 'index.html';
             }
         });
     </script>
