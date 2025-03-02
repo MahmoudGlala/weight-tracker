@@ -191,67 +191,8 @@
         auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log('User is logged in:', user.uid);
-                window.location.href = './weight-tracking.html'; // توجيه نسبي للصفحة الرئيسية
+                window.location.href = 'weight-tracking.html'; // توجيه للصفحة الرئيسية
             } else {
                 console.log('No user is logged in');
                 // ربط زر التسجيل بعد التهيئة
-                document.getElementById('signupButton').addEventListener('click', signup);
-            }
-        }, (error) => {
-            console.error('Auth state change error:', error.message);
-        });
-
-        // دالة التسجيل
-        function signup() {
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            if (validateInput(email, password)) {
-                console.log('Trying to signup with:', name, email, password);
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        console.log('Signup success:', user.uid);
-                        db.collection('users').doc(user.uid).set({
-                            name: name,
-                            email: email
-                        }).then(() => {
-                            console.log('User data saved');
-                            alert('تم التسجيل بنجاح!');
-                            window.location.href = './weight-tracking.html'; // التحويل للصفحة الرئيسية
-                        }).catch((error) => {
-                            console.error('Firestore error:', error.message);
-                            alert('خطأ في حفظ البيانات: ' + error.message);
-                        });
-                    })
-                    .catch((error) => {
-                        console.error('Signup error:', error.message);
-                        alert('خطأ في التسجيل: ' + error.message);
-                    });
-            } else {
-                alert('الإيميل غير صالح أو كلمة المرور أقل من 6 أحرف!');
-            }
-        }
-
-        // دالة تبديل الدارك mود
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const toggle = document.querySelector('.toggle-mode');
-            toggle.classList.toggle('dark');
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        }
-
-        // تفعيل الدارك mود إذا كان مخزن في localStorage
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-            document.querySelector('.toggle-mode').classList.add('dark');
-        }
-
-        // التحقق من المدخلات
-        function validateInput(email, password) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email) && password.length >= 6;
-        }
-    </script>
-</body>
-</html>
+                document.getElemen
