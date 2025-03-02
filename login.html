@@ -142,10 +142,10 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Firebase SDK مع defer -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js" defer></script>
+    <!-- Firebase SDK Legacy -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
     <label class="toggle-mode" onclick="toggleDarkMode()">
@@ -163,7 +163,7 @@
             <label>كلمة المرور:</label>
             <input type="password" id="password" placeholder="أدخل كلمة المرور">
         </div>
-        <button onclick="login()">تسجيل الدخول</button>
+        <button id="loginButton">تسجيل الدخول</button>
         <div class="signup-link">
             ليس لديك حساب؟ <a href="signup.html">سجل الآن</a>
         </div>
@@ -186,6 +186,8 @@
         // التحقق من تهيئة Firebase
         firebase.auth().onAuthStateChanged(() => {
             console.log('Firebase is initialized');
+            // ربط زر التسجيل الدخول بعد التهيئة
+            document.getElementById('loginButton').addEventListener('click', login);
         });
 
         // دالة تسجيل الدخول
@@ -193,17 +195,22 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             console.log('Trying to login with:', email, password);
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log('Login success:', user.uid);
-                    alert('تم تسجيل الدخول بنجاح!');
-                    window.location.href = 'tracking.html';
-                })
-                .catch((error) => {
-                    console.error('Login error:', error.message);
-                    alert('خطأ في الدخول: ' + error.message);
-                });
+            if (auth) {
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        console.log('Login success:', user.uid);
+                        alert('تم تسجيل الدخول بنجاح!');
+                        window.location.href = 'tracking.html';
+                    })
+                    .catch((error) => {
+                        console.error('Login error:', error.message);
+                        alert('خطأ في الدخول: ' + error.message);
+                    });
+            } else {
+                console.error('Authentication not initialized yet');
+                alert('Firebase لسه مش جاهز، جرب تاني بعد لحظة.');
+            }
         }
 
         // دالة تبديل الدارك مود
