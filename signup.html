@@ -173,10 +173,11 @@
         </div>
     </div>
 
+    <!-- نقل السكربت لنهاية الـ body -->
     <script>
         // تهيئة Firebase
         const firebaseConfig = {
-  apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
+ apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
   authDomain: "weight-1246d.firebaseapp.com",
   projectId: "weight-1246d",
   storageBucket: "weight-1246d.firebasestorage.app",
@@ -192,21 +193,23 @@
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
+            console.log('Trying to signup with:', name, email, password);
             if (name && email && password) {
                 auth.createUserWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
-                        // حفظ الاسم في Firestore
+                        console.log('Signup success:', user.uid);
                         db.collection('users').doc(user.uid).set({
                             name: name,
                             email: email
                         }).then(() => {
+                            console.log('User data saved');
                             alert('تم التسجيل بنجاح!');
                             window.location.href = 'login.html';
                         });
                     })
                     .catch((error) => {
+                        console.error('Signup error:', error.message);
                         alert('خطأ في التسجيل: ' + error.message);
                     });
             } else {
