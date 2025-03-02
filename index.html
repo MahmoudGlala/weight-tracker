@@ -162,6 +162,12 @@
             document.body.classList.add('dark-mode');
             document.querySelector('.toggle-mode').classList.add('dark');
         }
+
+        // التحقق من المدخلات
+        function validateInput(email, password) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email) && password.length >= 6;
+        }
     </script>
 </body>
 </html>
