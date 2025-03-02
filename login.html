@@ -170,50 +170,52 @@
     </div>
 
     <script>
-        // تهيئة Firebase
-        const firebaseConfig = {
-  apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
-  authDomain: "weight-1246d.firebaseapp.com",
-  projectId: "weight-1246d",
-  storageBucket: "weight-1246d.firebasestorage.app",
-  messagingSenderId: "86745037810",
-  appId: "1:86745037810:web:439d33bce75e5693b4896b"
+        window.onload = function() {
+            // تهيئة Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
+                authDomain: "weight-1246d.firebaseapp.com",
+                projectId: "weight-1246d",
+                storageBucket: "weight-1246d.firebasestorage.app",
+                messagingSenderId: "86745037810",
+                appId: "1:86745037810:web:439d33bce75e5693b4896b"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+
+            // دالة تسجيل الدخول
+            function login() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                console.log('Trying to login with:', email, password);
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        console.log('Login success:', user.uid);
+                        alert('تم تسجيل الدخول بنجاح!');
+                        window.location.href = 'tracking.html';
+                    })
+                    .catch((error) => {
+                        console.error('Login error:', error.message);
+                        alert('خطأ في الدخول: ' + error.message);
+                    });
+            }
+
+            // دالة تبديل الدارك مود
+            function toggleDarkMode() {
+                document.body.classList.toggle('dark-mode');
+                const toggle = document.querySelector('.toggle-mode');
+                toggle.classList.toggle('dark');
+                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            }
+
+            // تفعيل الدارك مود إذا كان مخزن في localStorage
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.toggle-mode').classList.add('dark');
+            }
         };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // دالة تسجيل الدخول
-        function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            console.log('Trying to login with:', email, password);
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log('Login success:', user.uid);
-                    alert('تم تسجيل الدخول بنجاح!');
-                    window.location.href = 'tracking.html';
-                })
-                .catch((error) => {
-                    console.error('Login error:', error.message);
-                    alert('خطأ في الدخول: ' + error.message);
-                });
-        }
-
-        // دالة تبديل الدارك مود
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const toggle = document.querySelector('.toggle-mode');
-            toggle.classList.toggle('dark');
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        }
-
-        // تفعيل الدارك مود إذا كان مخزن في localStorage
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-            document.querySelector('.toggle-mode').classList.add('dark');
-        }
     </script>
 </body>
 </html>
