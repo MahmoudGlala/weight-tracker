@@ -194,8 +194,8 @@
         function login() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            console.log('Trying to login with:', email, password);
-            if (auth) {
+            if (validateInput(email, password)) {
+                console.log('Trying to login with:', email, password);
                 auth.signInWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
@@ -208,8 +208,7 @@
                         alert('خطأ في الدخول: ' + error.message);
                     });
             } else {
-                console.error('Authentication not initialized yet');
-                alert('Firebase لسه مش جاهز، جرب تاني بعد لحظة.');
+                alert('الإيميل غير صالح أو كلمة المرور أقل من 6 أحرف!');
             }
         }
 
@@ -225,6 +224,12 @@
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
             document.querySelector('.toggle-mode').classList.add('dark');
+        }
+
+        // التحقق من المدخلات
+        function validateInput(email, password) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email) && password.length >= 6;
         }
     </script>
 </body>
