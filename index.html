@@ -135,7 +135,7 @@
         auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log('User is logged in:', user.uid);
-                window.location.href = './weight-tracking.html'; // توجيه نسبي للصفحة الرئيسية داخل المجلد
+                window.location.href = 'weight-tracking.html'; // توجيه للصفحة الرئيسية
             } else {
                 console.log('No user is logged in');
                 // ربط الأزرار بعد التهيئة
