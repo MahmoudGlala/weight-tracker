@@ -142,10 +142,10 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <!-- Firebase SDK مع defer -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js" defer></script>
 </head>
 <body>
     <label class="toggle-mode" onclick="toggleDarkMode()">
@@ -172,7 +172,7 @@
     <script>
         // تهيئة Firebase
         const firebaseConfig = {
- apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
+  apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
   authDomain: "weight-1246d.firebaseapp.com",
   projectId: "weight-1246d",
   storageBucket: "weight-1246d.firebasestorage.app",
