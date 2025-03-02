@@ -183,9 +183,14 @@
             messagingSenderId: "86745037810",
             appId: "1:86745037810:web:439d33bce75e5693b4896b"
         };
-        firebase.initializeApp(firebaseConfig);
+        const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // التحقق من تهيئة Firebase
+        firebase.auth().onAuthStateChanged(() => {
+            console.log('Firebase is initialized');
+        });
 
         // دالة التسجيل
         function signup() {
