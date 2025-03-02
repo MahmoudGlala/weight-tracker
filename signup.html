@@ -142,10 +142,10 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Firebase SDK مع defer -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js" defer></script>
+    <!-- Firebase SDK Legacy -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
     <label class="toggle-mode" onclick="toggleDarkMode()">
@@ -167,7 +167,7 @@
             <label>كلمة المرور:</label>
             <input type="password" id="password" placeholder="أدخل كلمة المرور">
         </div>
-        <button onclick="signup()">تسجيل</button>
+        <button id="signupButton">تسجيل</button>
         <div class="login-link">
             لديك حساب؟ <a href="login.html">سجل الدخول</a>
         </div>
@@ -184,12 +184,16 @@
             appId: "1:86745037810:web:439d33bce75e5693b4896b"
         };
         const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+        let auth, db;
 
         // التحقق من تهيئة Firebase
         firebase.auth().onAuthStateChanged(() => {
             console.log('Firebase is initialized');
+            auth = firebase.auth();
+            db = firebase.firestore();
+
+            // ربط زر التسجيل بعد التهيئة
+            document.getElementById('signupButton').addEventListener('click', signup);
         });
 
         // دالة التسجيل
@@ -198,7 +202,7 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             console.log('Trying to signup with:', name, email, password);
-            if (name && email && password) {
+            if (auth && name && email && password) {
                 auth.createUserWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
@@ -217,7 +221,8 @@
                         alert('خطأ في التسجيل: ' + error.message);
                     });
             } else {
-                alert('يرجى تعبئة جميع الحقول!');
+                console.error('Authentication not ready or fields are empty');
+                alert('Firebase لسه مش جاهز أو يرجى تعبئة جميع الحقول!');
             }
         }
 
