@@ -174,63 +174,61 @@
     </div>
 
     <script>
-        window.onload = function() {
-            // تهيئة Firebase
-            const firebaseConfig = {
-                apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
-                authDomain: "weight-1246d.firebaseapp.com",
-                projectId: "weight-1246d",
-                storageBucket: "weight-1246d.firebasestorage.app",
-                messagingSenderId: "86745037810",
-                appId: "1:86745037810:web:439d33bce75e5693b4896b"
-            };
-            firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.firestore();
-
-            // دالة التسجيل
-            function signup() {
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                console.log('Trying to signup with:', name, email, password);
-                if (name && email && password) {
-                    auth.createUserWithEmailAndPassword(email, password)
-                        .then((userCredential) => {
-                            const user = userCredential.user;
-                            console.log('Signup success:', user.uid);
-                            db.collection('users').doc(user.uid).set({
-                                name: name,
-                                email: email
-                            }).then(() => {
-                                console.log('User data saved');
-                                alert('تم التسجيل بنجاح!');
-                                window.location.href = 'login.html';
-                            });
-                        })
-                        .catch((error) => {
-                            console.error('Signup error:', error.message);
-                            alert('خطأ في التسجيل: ' + error.message);
-                        });
-                } else {
-                    alert('يرجى تعبئة جميع الحقول!');
-                }
-            }
-
-            // دالة تبديل الدارك مود
-            function toggleDarkMode() {
-                document.body.classList.toggle('dark-mode');
-                const toggle = document.querySelector('.toggle-mode');
-                toggle.classList.toggle('dark');
-                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-            }
-
-            // تفعيل الدارك مود إذا كان مخزن في localStorage
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-                document.querySelector('.toggle-mode').classList.add('dark');
-            }
+        // تهيئة Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAs8JKGXmceU4DrBkMYkdexKiKGKOShJI4",
+            authDomain: "weight-1246d.firebaseapp.com",
+            projectId: "weight-1246d",
+            storageBucket: "weight-1246d.firebasestorage.app",
+            messagingSenderId: "86745037810",
+            appId: "1:86745037810:web:439d33bce75e5693b4896b"
         };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // دالة التسجيل
+        function signup() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            console.log('Trying to signup with:', name, email, password);
+            if (name && email && password) {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        console.log('Signup success:', user.uid);
+                        db.collection('users').doc(user.uid).set({
+                            name: name,
+                            email: email
+                        }).then(() => {
+                            console.log('User data saved');
+                            alert('تم التسجيل بنجاح!');
+                            window.location.href = 'login.html';
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('Signup error:', error.message);
+                        alert('خطأ في التسجيل: ' + error.message);
+                    });
+            } else {
+                alert('يرجى تعبئة جميع الحقول!');
+            }
+        }
+
+        // دالة تبديل الدارك مود
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const toggle = document.querySelector('.toggle-mode');
+            toggle.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // تفعيل الدارك مود إذا كان مخزن في localStorage
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.toggle-mode').classList.add('dark');
+        }
     </script>
 </body>
 </html>
