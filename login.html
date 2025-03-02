@@ -183,11 +183,16 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // التحقق من تهيئة Firebase
-        firebase.auth().onAuthStateChanged(() => {
-            console.log('Firebase is initialized');
-            // ربط زر التسجيل الدخول بعد التهيئة
-            document.getElementById('loginButton').addEventListener('click', login);
+        // التحقق من حالة المستخدم عند التحميل
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is logged in:', user.uid);
+                window.location.href = 'weight-tracking.html'; // توجيه للصفحة الرئيسية
+            } else {
+                console.log('No user is logged in');
+                // ربط زر التسجيل الدخول بعد التهيئة
+                document.getElementById('loginButton').addEventListener('click', login);
+            }
         });
 
         // دالة تسجيل الدخول
@@ -201,7 +206,7 @@
                         const user = userCredential.user;
                         console.log('Login success:', user.uid);
                         alert('تم تسجيل الدخول بنجاح!');
-                        window.location.href = 'tracking.html';
+                        window.location.href = 'weight-tracking.html'; // التحويل للصفحة الرئيسية
                     })
                     .catch((error) => {
                         console.error('Login error:', error.message);
@@ -220,7 +225,7 @@
             localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
         }
 
-        // تفعيل الدارك مود إذا كان مخزن في localStorage
+        // تفعيل الدارك mود إذا كان مخزن في localStorage
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
             document.querySelector('.toggle-mode').classList.add('dark');
