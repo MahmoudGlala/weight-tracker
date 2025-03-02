@@ -184,14 +184,12 @@
             appId: "1:86745037810:web:439d33bce75e5693b4896b"
         };
         const app = firebase.initializeApp(firebaseConfig);
-        let auth, db;
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
         // التحقق من تهيئة Firebase
         firebase.auth().onAuthStateChanged(() => {
             console.log('Firebase is initialized');
-            auth = firebase.auth();
-            db = firebase.firestore();
-
             // ربط زر التسجيل بعد التهيئة
             document.getElementById('signupButton').addEventListener('click', signup);
         });
@@ -201,8 +199,8 @@
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            console.log('Trying to signup with:', name, email, password);
-            if (auth && name && email && password) {
+            if (validateInput(email, password)) {
+                console.log('Trying to signup with:', name, email, password);
                 auth.createUserWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
@@ -214,6 +212,9 @@
                             console.log('User data saved');
                             alert('تم التسجيل بنجاح!');
                             window.location.href = 'login.html';
+                        }).catch((error) => {
+                            console.error('Firestore error:', error.message);
+                            alert('خطأ في حفظ البيانات: ' + error.message);
                         });
                     })
                     .catch((error) => {
@@ -221,8 +222,7 @@
                         alert('خطأ في التسجيل: ' + error.message);
                     });
             } else {
-                console.error('Authentication not ready or fields are empty');
-                alert('Firebase لسه مش جاهز أو يرجى تعبئة جميع الحقول!');
+                alert('الإيميل غير صالح أو كلمة المرور أقل من 6 أحرف!');
             }
         }
 
@@ -238,6 +238,12 @@
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
             document.querySelector('.toggle-mode').classList.add('dark');
+        }
+
+        // التحقق من المدخلات
+        function validateInput(email, password) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email) && password.length >= 6;
         }
     </script>
 </body>
