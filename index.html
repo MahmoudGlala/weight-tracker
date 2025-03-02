@@ -131,12 +131,17 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // التحقق من تهيئة Firebase
-        firebase.auth().onAuthStateChanged(() => {
-            console.log('Firebase is initialized');
-            // ربط الأزرار بعد التهيئة
-            document.getElementById('loginButton').addEventListener('click', loginRedirect);
-            document.getElementById('signupButton').addEventListener('click', signupRedirect);
+        // التحقق من حالة المستخدم عند التحميل
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is logged in:', user.uid);
+                window.location.href = 'weight-tracking.html'; // توجيه للصفحة الرئيسية
+            } else {
+                console.log('No user is logged in');
+                // ربط الأزرار بعد التهيئة
+                document.getElementById('loginButton').addEventListener('click', loginRedirect);
+                document.getElementById('signupButton').addEventListener('click', signupRedirect);
+            }
         });
 
         // توجيه لصفحة الدخول
@@ -161,12 +166,6 @@
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
             document.querySelector('.toggle-mode').classList.add('dark');
-        }
-
-        // التحقق من المدخلات
-        function validateInput(email, password) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email) && password.length >= 6;
         }
     </script>
 </body>
